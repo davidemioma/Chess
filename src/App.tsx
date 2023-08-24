@@ -41,15 +41,11 @@ function App() {
     switch (target) {
       case "pawn":
         const pawnIsValid = validatePawn({
+          startPieces,
           currentPlayer,
           startIndex,
           width,
           targetIndex,
-          target:
-            startPieces[targetIndex] !== "" &&
-            (currentPlayer === "black"
-              ? startPieces[targetIndex].includes("2")
-              : !startPieces[targetIndex].includes("2")),
         });
 
         return pawnIsValid;
@@ -58,15 +54,11 @@ function App() {
 
       case "pawn2":
         const pawn2IsValid = validatePawn({
+          startPieces,
           currentPlayer,
           startIndex,
           width,
           targetIndex,
-          target:
-            startPieces[targetIndex] !== "" &&
-            (currentPlayer === "black"
-              ? startPieces[targetIndex].includes("2")
-              : !startPieces[targetIndex].includes("2")),
         });
 
         return pawn2IsValid;

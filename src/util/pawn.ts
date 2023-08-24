@@ -1,17 +1,17 @@
 interface Props {
+  startPieces: string[];
   currentPlayer: "black" | "gold";
   startIndex: number;
   width: number;
   targetIndex: number;
-  target?: boolean;
 }
 
 export const validatePawn = ({
+  startPieces,
   currentPlayer,
   startIndex,
   width,
   targetIndex,
-  target,
 }: Props) => {
   let isValid = false;
 
@@ -22,20 +22,22 @@ export const validatePawn = ({
   if (currentPlayer === "black") {
     if (
       (BLACK_PAWN_START_ROW.includes(startIndex) &&
+        !startPieces[targetIndex] &&
         startIndex + width * 2 === targetIndex) ||
-      startIndex + width === targetIndex ||
-      (startIndex + width - 1 === targetIndex && target) ||
-      (startIndex + width + 1 === targetIndex && target)
+      (!startPieces[targetIndex] && startIndex + width === targetIndex) ||
+      (startPieces[targetIndex] && startIndex + width - 1 === targetIndex) ||
+      (startPieces[targetIndex] && startIndex + width + 1 === targetIndex)
     ) {
       isValid = true;
     }
   } else if (currentPlayer === "gold") {
     if (
       (GOLD_PAWN_START_ROW.includes(startIndex) &&
+        !startPieces[targetIndex] &&
         startIndex - width * 2 === targetIndex) ||
-      startIndex - width === targetIndex ||
-      (startIndex - width - 1 === targetIndex && target) ||
-      (startIndex - width + 1 === targetIndex && target)
+      (!startPieces[targetIndex] && startIndex - width === targetIndex) ||
+      (startPieces[targetIndex] && startIndex - width - 1 === targetIndex) ||
+      (startPieces[targetIndex] && startIndex - width + 1 === targetIndex)
     ) {
       isValid = true;
     }
