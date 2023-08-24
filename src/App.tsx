@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { validateKing } from "./util/king";
 import { validatePawn } from "./util/pawn";
 import { validateRook } from "./util/rook";
 import { validateQueen } from "./util/queen";
@@ -165,6 +166,30 @@ function App() {
         });
 
         return queen2IsValid;
+
+        break;
+
+      case "king":
+        const kingIsValid = validateKing({
+          currentPlayer,
+          startIndex,
+          width,
+          targetIndex,
+        });
+
+        return kingIsValid;
+
+        break;
+
+      case "king2":
+        const king2IsValid = validateKing({
+          currentPlayer,
+          startIndex,
+          width,
+          targetIndex,
+        });
+
+        return king2IsValid;
 
         break;
     }
