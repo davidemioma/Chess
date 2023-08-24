@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { validateKing } from "./util/king";
 import { validatePawn } from "./util/pawn";
 import { validateRook } from "./util/rook";
@@ -16,10 +16,16 @@ function App() {
 
   const [currentPlayer, setCurrentPlayer] = useState<"black" | "gold">("black");
 
+  const [startOver, setStartOver] = useState(false);
+
+  const [message, setMessage] = useState("");
+
   const onDragStart = (
     e: React.DragEvent<HTMLButtonElement>,
     index: number
   ) => {
+    if (startOver) return;
+
     e.dataTransfer.setData("text/plain", index.toString());
 
     setStartIndex(index);
@@ -195,8 +201,26 @@ function App() {
     }
   };
 
+  const checkMateHandler = () => {
+    const kings = startPieces.filter((piece) => piece.includes("king"));
+
+    if (!kings.some((king) => !king.includes("2"))) {
+      setMessage("Gold Player Wins!");
+
+      setStartOver(true);
+    }
+
+    if (!kings.some((king) => king.includes("2"))) {
+      setMessage("Black Player Wins!");
+
+      setStartOver(true);
+    }
+  };
+
   const onDrop = (e: React.DragEvent<HTMLDivElement>, index: number) => {
     e.preventDefault();
+
+    if (startOver) return;
 
     const pieceIndex = Number(e.dataTransfer.getData("text/plain"));
 
@@ -241,8 +265,24 @@ function App() {
     changePlayer();
   };
 
+  const startOverHandler = () => {
+    setStartIndex(0);
+
+    setStartPieces(initialArrangement);
+
+    setCurrentPlayer("black");
+
+    setMessage("");
+
+    setStartOver(false);
+  };
+
+  useEffect(() => {
+    checkMateHandler();
+  }, [startPieces]);
+
   return (
-    <div className="w-screen h-screen flex flex-col items-center justify-center overflow-hidden">
+    <div className="w-screen h-screen flex flex-col gap-4 items-center justify-center overflow-hidden">
       <div className="relative z-10 grid grid-cols-8 w-[320px] h-[320px] border-2 border-black shadow-md overflow-hidden">
         {startPieces.map((piece, index) => {
           const PieceIcon = getPiece(piece);
@@ -279,6 +319,17 @@ function App() {
           );
         })}
       </div>
+
+      {message && <p className="text-sm">{message}</p>}
+
+      {startOver && (
+        <button
+          className="py-2 px-4 bg-black text-white text-sm rounded"
+          onClick={startOverHandler}
+        >
+          Start Over
+        </button>
+      )}
     </div>
   );
 }
