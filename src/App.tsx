@@ -275,6 +275,10 @@ function App() {
 
   return (
     <div className="w-screen h-screen flex flex-col gap-4 items-center justify-center overflow-hidden">
+      <span className="text-lg font-medium capitalize mb-5">
+        Current Player: {currentPlayer}
+      </span>
+
       <div className="relative z-10 grid grid-cols-8 w-[320px] h-[320px] border-2 border-black shadow-md overflow-hidden">
         {startPieces.map((piece, index) => {
           const PieceIcon = getPiece(piece);
